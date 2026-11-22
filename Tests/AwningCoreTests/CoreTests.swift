@@ -1,5 +1,5 @@
 import XCTest
-@testable import QuickNotesCore
+@testable import AwningCore
 
 final class NoteFileTests: XCTestCase {
     var dir: URL!

@@ -1,5 +1,5 @@
 import AppKit
-import QuickNotesCore
+import AwningCore
 
 /// The editor. Behaviour is hooked in through standard NSResponder commands
 /// (`cancelOperation:`, `insertTab:`, `insertNewline:` …) rather than raw keyCodes, so

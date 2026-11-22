@@ -3,8 +3,8 @@ import Foundation
 /// Persisted preferences (UserDefaults).
 final class Settings {
     static let shared = Settings()
-    /// Everything QuickNotes writes lives in one folder, so it can be synced or put under git as a unit.
-    static let homeFolderPath = "~/.quicknotes"
+    /// Everything Awning writes lives in one folder, so it can be synced or put under git as a unit.
+    static let homeFolderPath = "~/.awning"
     static let defaultNotesPath = homeFolderPath + "/notes.txt"
 
     static var homeFolder: URL {

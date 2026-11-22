@@ -1,12 +1,12 @@
-# QuickNotes
+# Awning
 
 A drop-down scratchpad for macOS, in the style of the Quake console.
 
-Press **⌥ Space** anywhere and a notepad slides down from under the menu bar. Jot something down, press **esc**, and you're back where you were. Your notes are one plain-text file: `~/.quicknotes/notes.txt`.
+Press **⌥ Space** anywhere and a notepad slides down from under the menu bar. Jot something down, press **esc**, and you're back where you were. Your notes are one plain-text file: `~/.awning/notes.txt`.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/hero-dark.png">
-  <img alt="The QuickNotes visor open below the menu bar, showing notes with headings, timestamps, checkboxes and a link" src="docs/hero-light.png">
+  <img alt="The Awning visor open below the menu bar, showing notes with headings, timestamps, checkboxes and a link" src="docs/hero-light.png">
 </picture>
 
 ## Why
@@ -28,7 +28,7 @@ You need macOS 13 or later and Xcode 15 or later (or the matching Swift toolchai
 
 ```bash
 git clone <this repository>
-cd quicknotes
+cd awning
 ./build.sh install
 ```
 
@@ -61,10 +61,10 @@ Notes are plain text, but a few things are styled as you type: `#` headings, tim
 
 Right-click (or ⌥/⌃-click) the menu bar icon:
 
-- **Hotkey:** ⌥ Space, ⌃ \`, ⌥ \`, ⇧⌘ Space or ⌥⌘ N. If another app already uses the one you pick, QuickNotes tells you and the menu bar icon shows a warning.
+- **Hotkey:** ⌥ Space, ⌃ \`, ⌥ \`, ⇧⌘ Space or ⌥⌘ N. If another app already uses the one you pick, Awning tells you and the menu bar icon shows a warning.
 - **Appearance:** Match System (default), Light or Dark.
 
-  <img alt="QuickNotes in light and dark mode" src="docs/hero-light.png" width="49%"> <img alt="" src="docs/hero-dark.png" width="49%">
+  <img alt="Awning in light and dark mode" src="docs/hero-light.png" width="49%"> <img alt="" src="docs/hero-dark.png" width="49%">
 - **Choose Notes File…:** edit any other text file instead, e.g. one inside a synced folder.
 - **Keep Open When Unfocused** and **Launch at Login.**
 
@@ -73,47 +73,47 @@ Height and text size are remembered too.
 ## Your notes file
 
 ```
-~/.quicknotes/
+~/.awning/
   notes.txt        your notes
   conflicts/       backups from edit conflicts (only created if one happens)
 ```
 
-QuickNotes is careful with this file:
+Awning is careful with this file:
 
 - **It saves continuously:** 0.4 s after you stop typing, at least every 3 s while you keep typing, and whenever you hide the visor, quit, or the Mac sleeps or shuts down.
-- **Adding text only appends.** If you only added to the end, only the new text is written, so `tail -f ~/.quicknotes/notes.txt` keeps working. Any other edit is written to a temporary file and swapped in, so a crash never leaves a half-written file.
-- **Changes from other programs show up live.** Try `echo "call mum" >> ~/.quicknotes/notes.txt` with the visor open, even mid-sentence.
-- **Conflicts never lose anything.** If another program rewrites the file in the few seconds before your typing is saved, your version is kept and the other one is saved in `~/.quicknotes/conflicts/`. The status line tells you and links to it. This mostly matters if you sync the folder between Macs.
+- **Adding text only appends.** If you only added to the end, only the new text is written, so `tail -f ~/.awning/notes.txt` keeps working. Any other edit is written to a temporary file and swapped in, so a crash never leaves a half-written file.
+- **Changes from other programs show up live.** Try `echo "call mum" >> ~/.awning/notes.txt` with the visor open, even mid-sentence.
+- **Conflicts never lose anything.** If another program rewrites the file in the few seconds before your typing is saved, your version is kept and the other one is saved in `~/.awning/conflicts/`. The status line tells you and links to it. This mostly matters if you sync the folder between Macs.
 - **It won't damage files it can't read.** A file that isn't valid UTF-8 opens read-only instead of being overwritten.
-- **Symlinks are followed.** Point `~/.quicknotes` (or just `notes.txt`) into Dropbox, iCloud Drive or a git repository and it stays a link.
+- **Symlinks are followed.** Point `~/.awning` (or just `notes.txt`) into Dropbox, iCloud Drive or a git repository and it stays a link.
 
 ## Uninstall
 
-Quit QuickNotes from the menu bar, then:
+Quit Awning from the menu bar, then:
 
 ```bash
-rm -rf /Applications/QuickNotes.app
-defaults delete dev.quicknotes.QuickNotes   # preferences
-rm -rf ~/.quicknotes                        # your notes. Only if you're sure!
+rm -rf /Applications/Awning.app
+defaults delete dev.awning.Awning   # preferences
+rm -rf ~/.awning                    # your notes. Only if you're sure!
 ```
 
 ## Development
 
 ```bash
-./build.sh          # build build/QuickNotes.app
+./build.sh          # build build/Awning.app
 ./build.sh run      # build and (re)launch
 ./build.sh test     # unit tests (same as: swift test)
 UNIVERSAL=1 ./build.sh   # Apple silicon + Intel binary
 ```
 
-It's a Swift package. The file handling, conflict logic and text editing helpers live in `QuickNotesCore` with no AppKit dependency, so they're unit tested. The app target is the UI on top.
+It's a Swift package. The file handling, conflict logic and text editing helpers live in `AwningCore` with no AppKit dependency, so they're unit tested. The app target is the UI on top.
 
 ```
-Sources/QuickNotesCore/   pure logic, unit tested
+Sources/AwningCore/       pure logic, unit tested
   NoteFile.swift          read / append / atomic write, conflict backups
   SyncResolver.swift      what to do when the file and the editor disagree
   TextOps.swift           list continuation, checkboxes, indent, timestamps, word count
-Sources/QuickNotes/       the app
+Sources/Awning/           the app
   AppDelegate.swift       menu bar icon and menu, hotkey, launch at login
   VisorController.swift   wires everything together; all visor shortcuts
   VisorPanel.swift        the drop-down window and its animation
@@ -124,7 +124,7 @@ Sources/QuickNotes/       the app
   Highlighter.swift       styling, re-done only for the paragraph being edited
   Theme.swift             light and dark colours
   HotKey.swift            global hotkey (Carbon, so no permissions needed)
-Tests/QuickNotesCoreTests/
+Tests/AwningCoreTests/
 ```
 
 ## License

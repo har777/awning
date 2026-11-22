@@ -6,7 +6,7 @@ if let bundleID = Bundle.main.bundleIdentifier,
    NSRunningApplication.runningApplications(withBundleIdentifier: bundleID)
        .contains(where: { $0 != NSRunningApplication.current }) {
     DistributedNotificationCenter.default().postNotificationName(
-        .quickNotesToggle, object: nil, userInfo: nil, deliverImmediately: true)
+        .awningToggle, object: nil, userInfo: nil, deliverImmediately: true)
     exit(0)
 }
 

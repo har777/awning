@@ -1,5 +1,5 @@
 import AppKit
-import QuickNotesCore
+import AwningCore
 
 enum NoteStatus: Equatable {
     case saved

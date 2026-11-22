@@ -3,7 +3,7 @@ import ServiceManagement
 
 extension Notification.Name {
     /// Posted by a second launch so the running instance toggles instead.
-    static let quickNotesToggle = Notification.Name("dev.quicknotes.QuickNotes.toggle")
+    static let awningToggle = Notification.Name("dev.awning.Awning.toggle")
 }
 
 final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
@@ -22,7 +22,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         applyHotKey(HotKeyPreset.preset(id: settings.hotKeyID), userInitiated: false)
 
         DistributedNotificationCenter.default().addObserver(
-            self, selector: #selector(toggleVisor), name: .quickNotesToggle, object: nil)
+            self, selector: #selector(toggleVisor), name: .awningToggle, object: nil)
         NSWorkspace.shared.notificationCenter.addObserver(
             self, selector: #selector(flushNotes), name: NSWorkspace.willSleepNotification, object: nil)
         NSWorkspace.shared.notificationCenter.addObserver(
@@ -62,7 +62,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let main = NSMenu()
         let appItem = NSMenuItem()
         let appMenu = NSMenu()
-        appMenu.addItem(withTitle: "Quit QuickNotes", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        appMenu.addItem(withTitle: "Quit Awning", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         appItem.submenu = appMenu
         main.addItem(appItem)
 
@@ -95,11 +95,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         guard let button = statusItem?.button else { return }
         let ok = HotKeyCenter.shared.isRegistered
         let image = NSImage(systemSymbolName: ok ? "text.alignleft" : "exclamationmark.triangle",
-                            accessibilityDescription: "QuickNotes")
+                            accessibilityDescription: "Awning")
         image?.isTemplate = true
         button.image = image
         let title = HotKeyCenter.shared.current?.title ?? ""
-        button.toolTip = ok ? "QuickNotes — \(title)" : "QuickNotes — hotkey \(title) unavailable, pick another"
+        button.toolTip = ok ? "Awning — \(title)" : "Awning — hotkey \(title) unavailable, pick another"
     }
 
     @objc private func statusItemClicked() {
@@ -174,7 +174,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
         menu.addItem(login)
         menu.addItem(.separator())
-        menu.addItem(item("Quit QuickNotes", #selector(quit), key: "q"))
+        menu.addItem(item("Quit Awning", #selector(quit), key: "q"))
     }
 
     private func item(_ title: String, _ action: Selector, key: String = "", detail: String? = nil) -> NSMenuItem {
@@ -212,7 +212,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let panel = NSOpenPanel()
         panel.title = "Choose a notes file"
         panel.prompt = "Use This File"
-        panel.message = "QuickNotes edits a single plain-text file. Pick an existing .txt / .md file."
+        panel.message = "Awning edits a single plain-text file. Pick an existing .txt / .md file."
         panel.canChooseFiles = true
         panel.canChooseDirectories = false
         panel.allowsMultipleSelection = false
@@ -254,7 +254,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             }
         } catch {
             alert("Couldn't change Launch at Login", error.localizedDescription
-                  + "\n\nMove QuickNotes.app to /Applications (./build.sh install) and try again.")
+                  + "\n\nMove Awning.app to /Applications (./build.sh install) and try again.")
         }
     }
 

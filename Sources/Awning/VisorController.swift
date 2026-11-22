@@ -1,5 +1,5 @@
 import AppKit
-import QuickNotesCore
+import AwningCore
 
 /// Wires the panel, editor UI and note session together, and owns the visor's shortcuts.
 final class VisorController: NSObject, NSTextViewDelegate {

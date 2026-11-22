@@ -1,5 +1,5 @@
 import AppKit
-import QuickNotesCore
+import AwningCore
 
 /// The visor's content: header (title, file, status, actions), editor, footer (stats, hints).
 final class EditorView: NSView {
@@ -110,7 +110,7 @@ final class EditorView: NSView {
 
     private func buildChrome() {
         let prompt = label("›_", Theme.accent, Theme.mono(13, .bold))
-        let title = label("quicknotes", Theme.text, Theme.mono(12.5, .semibold))
+        let title = label("awning", Theme.text, Theme.mono(12.5, .semibold))
         pathButton.toolTip = "Reveal in Finder"
         // The path truncates first; the status line should stay readable.
         statusButton.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)

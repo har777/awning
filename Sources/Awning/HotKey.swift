@@ -24,7 +24,7 @@ struct HotKeyPreset {
 /// Accessibility / Input Monitoring permission.
 final class HotKeyCenter {
     static let shared = HotKeyCenter()
-    private static let signature: OSType = 0x514E_5445 // 'QNTE'
+    private static let signature: OSType = 0x4157_4E47 // 'AWNG'
 
     var onPress: (() -> Void)?
     private(set) var current: HotKeyPreset?
