@@ -31,7 +31,7 @@ Requires macOS 13+ and Xcode (or the Swift toolchain).
 | `⌘O` | Open the file in your default editor |
 | `⌘Q` | Quit |
 
-Right-click the menu bar icon (or ⌥/⌃-click it) for the menu: choose the notes file, change the hotkey, keep the visor open when focus leaves, launch at login. Drag the visor's bottom edge to change its height; the height is remembered.
+Right-click the menu bar icon (or ⌥/⌃-click it) for the menu: choose the notes file, change the hotkey, switch between light and dark (or match the system, the default), keep the visor open when focus leaves, launch at login. Drag the visor's bottom edge to change its height; the height is remembered.
 
 ## Where things live
 
@@ -41,7 +41,7 @@ Right-click the menu bar icon (or ⌥/⌃-click it) for the menu: choose the not
   conflicts/       other programs' versions that lost a conflict (only created when needed)
 ```
 
-Preferences (hotkey, visor height, text size) are kept in macOS preferences, not in this folder. You can switch to a different notes file from the menu bar icon; conflict backups still go to `~/.quicknotes/conflicts/`.
+Preferences (hotkey, appearance, visor height, text size) are kept in macOS preferences, not in this folder. You can switch to a different notes file from the menu bar icon; conflict backups still go to `~/.quicknotes/conflicts/`.
 
 ## How it treats your file
 

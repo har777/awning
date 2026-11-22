@@ -151,6 +151,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         hotKeyItem.submenu = hotKeyMenu
         menu.addItem(hotKeyItem)
 
+        let appearanceItem = NSMenuItem(title: "Appearance", action: nil, keyEquivalent: "")
+        let appearanceMenu = NSMenu()
+        for mode in AppearanceMode.allCases {
+            let entry = item(mode.title, #selector(pickAppearance(_:)))
+            entry.representedObject = mode.rawValue
+            entry.state = mode == visor.appearance ? .on : .off
+            appearanceMenu.addItem(entry)
+        }
+        appearanceItem.submenu = appearanceMenu
+        menu.addItem(appearanceItem)
+
         let keepOpen = item("Keep Open When Unfocused", #selector(toggleKeepOpen))
         keepOpen.state = visor.keepOpen ? .on : .off
         menu.addItem(keepOpen)
@@ -184,6 +195,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     @objc private func quit() { NSApp.terminate(nil) }
 
     @objc private func toggleKeepOpen() { visor.keepOpen.toggle() }
+
+    @objc private func pickAppearance(_ sender: NSMenuItem) {
+        guard let raw = sender.representedObject as? String, let mode = AppearanceMode(rawValue: raw) else { return }
+        visor.appearance = mode
+    }
 
     @objc private func pickHotKey(_ sender: NSMenuItem) {
         guard let id = sender.representedObject as? String else { return }

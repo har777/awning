@@ -21,6 +21,15 @@ final class VisorController: NSObject, NSTextViewDelegate {
     var isShown: Bool { panel.isShown }
     var notesURL: URL { session.file.url }
 
+    var appearance: AppearanceMode {
+        get { settings.appearance }
+        set {
+            settings.appearance = newValue
+            panel.appearance = newValue.nsAppearance
+            panel.invalidateShadow()
+        }
+    }
+
     var keepOpen: Bool {
         get { settings.keepOpenWhenUnfocused }
         set {
@@ -35,6 +44,7 @@ final class VisorController: NSObject, NSTextViewDelegate {
         super.init()
 
         panel.contentView = editor
+        panel.appearance = settings.appearance.nsAppearance
         panel.keyEquivalentHandler = { [weak self] in self?.handleKeyEquivalent($0) ?? false }
         panel.onEscape = { [weak self] in self?.hide() }
         panel.onResignKey = { [weak self] in self?.autoHide() }

@@ -29,7 +29,6 @@ final class VisorPanel: NSPanel {
         isReleasedWhenClosed = false
         isMovable = false
         animationBehavior = .none
-        appearance = NSAppearance(named: .darkAqua)
     }
 
     override var canBecomeKey: Bool { true }

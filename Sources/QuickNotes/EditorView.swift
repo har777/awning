@@ -53,7 +53,7 @@ final class EditorView: NSView {
         layer?.masksToBounds = true
 
         let blur = NSVisualEffectView(frame: bounds)
-        blur.material = .hudWindow
+        blur.material = .popover // adapts to light / dark
         blur.blendingMode = .behindWindow
         blur.state = .active // the app is rarely "active"; don't let the material go flat
         blur.autoresizingMask = [.width, .height]
@@ -103,7 +103,7 @@ final class EditorView: NSView {
         scrollView.hasHorizontalScroller = false
         scrollView.autohidesScrollers = true
         scrollView.scrollerStyle = .overlay
-        scrollView.scrollerKnobStyle = .light
+        scrollView.scrollerKnobStyle = .default
         scrollView.documentView = textView
         addSubview(scrollView)
     }

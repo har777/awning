@@ -39,6 +39,11 @@ final class Settings {
         set { defaults.set(newValue, forKey: "fontSize") }
     }
 
+    var appearance: AppearanceMode {
+        get { defaults.string(forKey: "appearance").flatMap(AppearanceMode.init) ?? .system }
+        set { defaults.set(newValue.rawValue, forKey: "appearance") }
+    }
+
     var keepOpenWhenUnfocused: Bool {
         get { defaults.bool(forKey: "keepOpen") }
         set { defaults.set(newValue, forKey: "keepOpen") }

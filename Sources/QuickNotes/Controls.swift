@@ -52,7 +52,15 @@ final class IconButton: NSButton {
     private func refresh() {
         image = isActive ? activeImage : normalImage
         contentTintColor = isActive ? Theme.accent : (hovering ? Theme.text : Theme.dim)
-        layer?.backgroundColor = hovering ? Theme.hover.cgColor : NSColor.clear.cgColor
+        // cgColor is a snapshot: resolve it against this view's appearance.
+        effectiveAppearance.performAsCurrentDrawingAppearance {
+            layer?.backgroundColor = hovering ? Theme.hover.cgColor : NSColor.clear.cgColor
+        }
+    }
+
+    override func viewDidChangeEffectiveAppearance() {
+        super.viewDidChangeEffectiveAppearance()
+        refresh()
     }
 }
 
@@ -145,7 +153,7 @@ final class ResizeHandle: NSView {
     override func draw(_ dirtyRect: NSRect) {
         guard hovering else { return }
         let pill = NSRect(x: bounds.midX - 22, y: 2, width: 44, height: 3)
-        NSColor(white: 1, alpha: 0.28).setFill()
+        Theme.grip.setFill()
         NSBezierPath(roundedRect: pill, xRadius: 1.5, yRadius: 1.5).fill()
     }
 }
@@ -172,10 +180,20 @@ final class BorderView: NSView {
     }
 }
 
+/// A solid (dynamic) colour. `updateLayer` runs with the right appearance current and is
+/// called again whenever the appearance changes.
 final class FillView: NSView {
+    private let color: NSColor
+
     init(color: NSColor) {
+        self.color = color
         super.init(frame: .zero)
         wantsLayer = true
+    }
+
+    override var wantsUpdateLayer: Bool { true }
+
+    override func updateLayer() {
         layer?.backgroundColor = color.cgColor
     }
 
