@@ -27,7 +27,7 @@ Opening the visor, adding a timestamp (⌘D), typing a list that continues itsel
 You need macOS 13 or later and Xcode 15 or later (or the matching Swift toolchain).
 
 ```bash
-git clone <this repository>
+git clone https://github.com/har777/awning.git
 cd awning
 ./build.sh install
 ```
