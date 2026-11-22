@@ -1,6 +1,6 @@
 # Awning
 
-A drop-down scratchpad for macOS, in the style of the Quake console.
+A drop-down scratchpad for macOS, in the style of the Quake console. **[awning.harishaji.com](https://awning.harishaji.com)**
 
 Press **⌥ Space** anywhere and a notepad slides down from under the menu bar. Jot something down, press **esc**, and you're back where you were. Your notes are one plain-text file: `~/.awning/notes.txt`.
 
