@@ -162,6 +162,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         appearanceItem.submenu = appearanceMenu
         menu.addItem(appearanceItem)
 
+        let animationItem = NSMenuItem(title: "Animation", action: nil, keyEquivalent: "")
+        let animationMenu = NSMenu()
+        for style in VisorAnimation.allCases {
+            let entry = item(style.title, #selector(pickAnimation(_:)))
+            entry.representedObject = style.rawValue
+            entry.state = style == visor.animation ? .on : .off
+            animationMenu.addItem(entry)
+        }
+        if visor.animation == .notch, !NSScreen.screens.contains(where: { $0.notch != nil }) {
+            animationMenu.addItem(.separator())
+            let note = NSMenuItem(title: "No screen with a notch: it slides down", action: nil, keyEquivalent: "")
+            note.isEnabled = false
+            animationMenu.addItem(note)
+        }
+        animationItem.submenu = animationMenu
+        menu.addItem(animationItem)
+
         let keepOpen = item("Keep Open When Unfocused", #selector(toggleKeepOpen))
         keepOpen.state = visor.keepOpen ? .on : .off
         menu.addItem(keepOpen)
@@ -199,6 +216,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     @objc private func pickAppearance(_ sender: NSMenuItem) {
         guard let raw = sender.representedObject as? String, let mode = AppearanceMode(rawValue: raw) else { return }
         visor.appearance = mode
+    }
+
+    @objc private func pickAnimation(_ sender: NSMenuItem) {
+        guard let raw = sender.representedObject as? String, let style = VisorAnimation(rawValue: raw) else { return }
+        visor.animation = style
     }
 
     @objc private func pickHotKey(_ sender: NSMenuItem) {

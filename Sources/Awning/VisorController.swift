@@ -3,7 +3,7 @@ import AwningCore
 
 /// Wires the panel, editor UI and note session together, and owns the visor's shortcuts.
 final class VisorController: NSObject, NSTextViewDelegate {
-    let panel = VisorPanel()
+    let panel: VisorPanel
     private let settings = Settings.shared
     private let highlighter: Highlighter
     private let editor: EditorView
@@ -30,6 +30,11 @@ final class VisorController: NSObject, NSTextViewDelegate {
         }
     }
 
+    var animation: VisorAnimation {
+        get { settings.animation }
+        set { settings.animation = newValue }
+    }
+
     var keepOpen: Bool {
         get { settings.keepOpenWhenUnfocused }
         set {
@@ -41,9 +46,9 @@ final class VisorController: NSObject, NSTextViewDelegate {
     override init() {
         highlighter = Highlighter(fontSize: CGFloat(settings.fontSize))
         editor = EditorView(highlighter: highlighter)
+        panel = VisorPanel(editor: editor)
         super.init()
 
-        panel.contentView = editor
         panel.appearance = settings.appearance.nsAppearance
         panel.keyEquivalentHandler = { [weak self] in self?.handleKeyEquivalent($0) ?? false }
         panel.onEscape = { [weak self] in self?.hide() }
@@ -61,11 +66,11 @@ final class VisorController: NSObject, NSTextViewDelegate {
         editor.statusButton.onClick = { [weak self] in self?.revealConflictBackup() }
         editor.resizeHandle.onDrag = { [weak self] dy in
             guard let self else { return }
-            self.panel.setHeight(self.panel.frame.height - dy)
+            self.panel.setHeight(self.panel.contentHeight - dy)
         }
         editor.resizeHandle.onEnd = { [weak self] in
             guard let self else { return }
-            self.settings.visorHeight = Double(self.panel.frame.height)
+            self.settings.visorHeight = Double(self.panel.contentHeight)
         }
         editor.pinButton.isActive = settings.keepOpenWhenUnfocused
         editor.setHints(hotKey: hotKeyTitle)
@@ -94,7 +99,9 @@ final class VisorController: NSObject, NSTextViewDelegate {
 
     func show() {
         let screen = screenUnderMouse()
-        panel.show(on: screen, height: preferredHeight(for: screen), reduceMotion: reduceMotion)
+        let notch = settings.animation == .notch ? screen.notch : nil
+        panel.show(on: screen, height: preferredHeight(for: screen), notch: notch,
+                   animated: settings.animation != .instant, reduceMotion: reduceMotion)
         if !(panel.firstResponder is NSTextView) {
             panel.makeFirstResponder(textView)
         }

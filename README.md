@@ -65,6 +65,7 @@ Right-click (or ⌥/⌃-click) the menu bar icon:
 - **Appearance:** Match System (default), Light or Dark.
 
   <img alt="Awning in light and dark mode" src="docs/hero-light.png" width="49%"> <img alt="" src="docs/hero-dark.png" width="49%">
+- **Animation:** Slide Down (default), Grow from Notch, or None to appear and disappear instantly. On a MacBook with a notch, the visor grows out of the notch like it's part of it, hanging from the top of the screen with a black band over the menu bar. Screens without a notch always slide down.
 - **Choose Notes File…:** edit any other text file instead, e.g. one inside a synced folder.
 - **Keep Open When Unfocused** and **Launch at Login.**
 
@@ -106,6 +107,12 @@ rm -rf ~/.awning                    # your notes. Only if you're sure!
 UNIVERSAL=1 ./build.sh   # Apple silicon + Intel binary
 ```
 
+No notch on your Mac? To try the notch animation anyway, pretend the main screen has one (then pick **Animation → Grow from Notch** and relaunch):
+
+```bash
+defaults write dev.awning.Awning simulateNotch -bool YES
+```
+
 It's a Swift package. The file handling, conflict logic and text editing helpers live in `AwningCore` with no AppKit dependency, so they're unit tested. The app target is the UI on top.
 
 ```
@@ -116,7 +123,8 @@ Sources/AwningCore/       pure logic, unit tested
 Sources/Awning/           the app
   AppDelegate.swift       menu bar icon and menu, hotkey, launch at login
   VisorController.swift   wires everything together; all visor shortcuts
-  VisorPanel.swift        the drop-down window and its animation
+  VisorPanel.swift        the drop-down window and its animations
+  VisorContainer.swift    notch detection and the grow-from-notch morph
   NoteSession.swift       unsaved-change tracking, autosave, syncing with the file
   FileWatcher.swift       notices outside changes, even if the file is replaced or deleted
   EditorView.swift        header, editor and footer layout

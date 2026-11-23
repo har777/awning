@@ -44,6 +44,15 @@ final class Settings {
         set { defaults.set(newValue.rawValue, forKey: "appearance") }
     }
 
+    var animation: VisorAnimation {
+        get { defaults.string(forKey: "animation").flatMap(VisorAnimation.init) ?? .slide }
+        set { defaults.set(newValue.rawValue, forKey: "animation") }
+    }
+
+    /// Pretend the main screen has a notch, to try the notch animation on any Mac:
+    /// `defaults write dev.awning.Awning simulateNotch -bool YES`
+    var simulateNotch: Bool { defaults.bool(forKey: "simulateNotch") }
+
     var keepOpenWhenUnfocused: Bool {
         get { defaults.bool(forKey: "keepOpen") }
         set { defaults.set(newValue, forKey: "keepOpen") }
